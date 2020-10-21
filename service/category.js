@@ -1,25 +1,19 @@
 const Category = require('../models/category.js');
-
+const db = require('../helpers/connectDB');
 
 module.exports = {
     getall,
     add,
 };
 
-function getall(req, res, next) {
+async function getall(req, res, next) {
     try {
-        Category.find(function(err,items){
-            if(err)
-            {
-                res.send("error");
-            }
-            else{
-                res.json({
-                    status: 200,
-                    message: 'success',
-                    items: items
-                });
-            }
+        let mongoDB = await db;
+        mongoDB.db("ONLINESHOP").collection("categories").find({}).toArray(function(err, result) {
+            if (err) throw err;
+            console.log(result);
+
+            res.send(result);
         });
     } catch (error) {
         if (error != null) response.status(500).send({ error: error.message });

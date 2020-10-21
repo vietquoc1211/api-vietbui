@@ -1,6 +1,6 @@
 const momgoose = require("mongoose");
 const categorySchema = new momgoose.Schema({
-    CategoryId:Number,
+    id:Number,
     DepartmentId:Number,
     Name:String,
     Description:String

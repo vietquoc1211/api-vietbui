@@ -15,18 +15,21 @@ app.use(function (request, response, next) {
   next();
 });
 
-//mongoose connect DB
-const mongoose = require('mongoose');
-const uri = "mongodb+srv://vietbq:vietbq@cluster0.zentx.mongodb.net/OnlineShop?retryWrites=true&w=majority";
-mongoose.connect(uri,function(err)
-{
-    if(err)
-    {
-        console.log('Connect Fail!');
-    }
-    else{
-        console.log('Connect MongoDB sussces!')
-    }
+
+const MongoClient = require('mongodb').MongoClient;
+
+// replace the uri string with your connection string.
+const uri = "mongodb+srv://vietbq:vietbq@cluster0.zentx.mongodb.net/ONLINESHOP?retryWrites=true&w=majority"
+MongoClient.connect(uri, function(err, client) {
+   if(err) {
+        console.log('Error occurred while connecting to MongoDB Atlas...\n',err);
+   }
+   console.log('Connected...');
+   client.db("ONLINESHOP").collection("categories").find({}).toArray(function(err, result) {
+    if (err) throw err;
+    console.log(result);
+    client.close();
+  });
 });
 
 
