@@ -12,8 +12,12 @@ async function getall(req, res, next) {
         mongoDB.db("ONLINESHOP").collection("categories").find({}).toArray(function(err, result) {
             if (err) throw err;
             console.log(result);
-
-            res.send(result);
+            const response = {
+                "code":"200",
+                "message":"",
+                "data": result
+            }
+            res.send(response);
         });
     } catch (error) {
         if (error != null) response.status(500).send({ error: error.message });

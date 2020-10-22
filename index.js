@@ -15,24 +15,6 @@ app.use(function (request, response, next) {
   next();
 });
 
-
-const MongoClient = require('mongodb').MongoClient;
-
-// replace the uri string with your connection string.
-const uri = "mongodb+srv://vietbq:vietbq@cluster0.zentx.mongodb.net/ONLINESHOP?retryWrites=true&w=majority"
-MongoClient.connect(uri, function(err, client) {
-   if(err) {
-        console.log('Error occurred while connecting to MongoDB Atlas...\n',err);
-   }
-   console.log('Connected...');
-   client.db("ONLINESHOP").collection("categories").find({}).toArray(function(err, result) {
-    if (err) throw err;
-    console.log(result);
-    client.close();
-  });
-});
-
-
 // import routes
 const categoryRoutes = require('./routes/category');
 
