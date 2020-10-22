@@ -3,9 +3,9 @@ const db = require('../helpers/connectDB');
 
 module.exports = {
     getall,
+    getbyid,
     add,
 };
-
 async function getall(req, res, next) {
     try {
         let mongoDB = await db;
@@ -23,39 +23,41 @@ async function getall(req, res, next) {
         if (error != null) response.status(500).send({ error: error.message });
     }
 }
-// function getbyid(req, res, id) {
-//     try {
-//         Category.find({ "_id": new ObjectId(request.params.id) }, (error, result)
-//         {
-//             if(err)
-//             {
-//                 res.send("error");
-//             }
-//             else{
-//                 res.json({
-//                     status: 200,
-//                     message: 'success',
-//                     items: items
-//                 });
-//             }
-//         });
-//     } catch (error) {
-//         if (error != null) response.status(500).send({ error: error.message });
-//     }
-// }
-function add(req, res) {
-    var newCate = new Category({
-        name: req.body.txtCate,
-        Books_id: []
-    });
-    res.json(newCate);
-    newCate.save(function(err){
-        if(err)
-        {
-            console.log("Save error:" +err);
-        }
+async function getbyid(req, res, id) {
+    try {
+        let mongoDB = await db;
+        var query = { id: id };
+        mongoDB.db("ONLINESHOP").collection("Category").find({query}).toArray(function(err, result) {
+            if (err) throw err;
+            console.log(result);
+            const response = {
+                "code":"200",
+                "message":"",
+                "data": result
+            }
+            res.send(response);
+        });
+    } catch (error) {
+        if (error != null) response.status(500).send({ error: error.message });
+    }
+}
+async function add(req, res, next) {
+    try {
+    let mongoDB = await db;
+    var newCate = { name: req.body.Name, address: req.body.Description };
+    mongoDB.db("ONLINESHOP").collection("Category").insertOne(newCate, function(err, resdb) {
+        if (err) throw err;
         else{
-            console.log("Save Succsesfully");
+            const response = {
+                "code":"200",
+                "message":"Number of documents inserted: " + resdb.insertedCount,
+                "data": req.body.Name
+            }
+            res.send(response);
+            mongoDB.close();
         }
     });
+    } catch (error) {
+        if (error != null) response.status(500).send({ error: error.message });
+    }
 }
