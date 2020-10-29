@@ -12,13 +12,8 @@ app.use(express.static("public"));
 
 // body-parser
 var bodyParser = require('body-parser');
-// app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(bodyParser.json());
-app.use(bodyParser.json({
-    limit: '50mb'
-  }));
-  
-  app.use(bodyParser.urlencoded({
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({
     limit: '50mb',
     parameterLimit: 100000,
     extended: true 
@@ -29,7 +24,8 @@ app.use(function (request, response, next) {
     response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
-
+//To allow cross-origin requests
+app.use(cors());
 // set the app to listen on the port
 app.listen(port, () => {
     console.log(`Server running on port: ${port}`);
@@ -38,11 +34,6 @@ app.listen(port, () => {
 //Route Prefixes
 app.use("/", indexRouter);
 app.use("/api/", apiRouter);
-
-
-
-//To allow cross-origin requests
-app.use(cors());
 
 // throw 404 if URL not found
 app.all("*", function(req, res) {

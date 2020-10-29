@@ -1,13 +1,13 @@
 ﻿const express = require('express');
 const router = express.Router();
-const userService = require('./user.service');
+const userService = require('../../service/auth/user');
 
 // routes
-router.post('/authenticate', authenticate);
+router.post('/login', authenticate);
 router.post('/register', register);
-router.get('/', getAll);
+router.get('/getall', getAll);
 router.get('/current', getCurrent);
-router.get('/:id', getById);
+router.get('/getbyid/:id', getById);
 router.put('/:id', update);
 router.delete('/:id', _delete);
 
@@ -27,7 +27,7 @@ function register(req, res, next) {
 
 function getAll(req, res, next) {
     userService.getAll()
-        .then(users => res.json(users))
+        .then(user => res.json(user))
         .catch(err => next(err));
 }
 
@@ -54,3 +54,5 @@ function _delete(req, res, next) {
         .then(() => res.json({}))
         .catch(err => next(err));
 }
+
+

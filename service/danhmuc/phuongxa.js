@@ -1,86 +1,48 @@
-const db = require('../../helpers/connectDB');
+const db = require('../../helpers/db');
+const _phuongxa = db.phuongxa;
 
 module.exports = {
     getall,
     getbyid,
     add,
-    addmany
+    update,
+    addmany,
+    _delete
 };
-async function getall(req, res, next) {
-    try {
-        let mongoDB = await db;
-        mongoDB.db("VietBui").collection("phuongxa").find({}).toArray(function(err, result) {
-            if (err) throw err;
-            console.log(result);
-            const response = {
-                "code":"200",
-                "message":"",
-                "data": result
-            }
-            res.send(response);
-        });
-    } catch (error) {
-        if (error != null) response.status(500).send({ error: error.message });
-    }
+async function getall() {
+    return await _phuongxa.find();
 }
-async function getbyid(req, res, id) {
-    try {
-        let mongoDB = await db;
-        var query = { id: id };
-        mongoDB.db("VietBui").collection("phuongxa").find({query}).toArray(function(err, result) {
-            if (err) throw err;
-            console.log(result);
-            const response = {
-                "code":"200",
-                "message":"",
-                "data": result
-            }
-            res.send(response);
-        });
-    } catch (error) {
-        if (error != null) response.status(500).send({ error: error.message });
-    }
+async function getbyid(id) {
+    return await _phuongxa.findById(id);
 }
-async function add(req, res, next) {
-    try {
-    let mongoDB = await db;
-    mongoDB.db("VietBui").collection("phuongxa").insertOne(req.body, function(err, resdb) {
-        if (err) throw err;
-        else{
-            const response = {
-                "code":"200",
-                "message":"Number of documents inserted: " + resdb.insertedCount,
-                "data": req.body.Name
-            }
-            res.send(response);
-            mongoDB.close();
-        }
-    });
-    } catch (error) {
-        if (error != null) response.status(500).send({ error: error.message });
-    }
-}
-async function addmany(req, res, next) {
-    try {
-    let mongoDB = await db;
 
-    var newarray = [];
-    for (const key in req.body) {
+async function add(phuongxaParam) {
+    if (await _phuongxa.findOne({ name: phuongxaParam.name,parent_code: phuongxaParam.parent_code  })) {
+        throw '"' + phuongxaParam.name + '" đã tồn tại';
+    }
+    // save user
+    await _phuongxa(phuongxaParam).save();
+}
+async function addmany(listphuongxa) {
+     var newarray = [];
+    for (const key in listphuongxa) {
         newarray.push(req.body[key]);
     }
-    mongoDB.db("VietBui").collection("phuongxa").insertMany(newarray, function(err, resdb) {
-        if (err) throw err;
-        else{
-            const response = {
-                "code":"200",
-                "message":"Number of documents inserted: " + resdb.insertedCount,
-                "data": req.body.Name
-            }
-            res.send(response);
-            mongoDB.close();
-        }
-    });
-    } catch (error) {
-        if (error != null) res.status(500).send({ error: error.message });
+    await _phuongxa.insertMany(newarray);
+}
+async function update(id, phuongxaParam) {
+    const phuongxa = await _phuongxa.findById(id);
+
+    // validate
+    if (!phuongxa) throw 'Phường xã không tồn tại!';
+    if (phuongxa.name !== phuongxaParam.name && await phuongxa.findOne({ name: phuongxaParam.name,parent_code:phuongxaParam.parent_code })) {
+        throw 'Phường xã:  "' + phuongxaParam.name + '" đã tồn tại';
     }
+    Object.assign(phuongxa, phuongxaParam);
+
+    await phuongxa.save();
+}
+
+async function _delete(id) {
+    await _phuongxa.findByIdAndRemove(id);
 }
