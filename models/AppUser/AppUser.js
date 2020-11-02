@@ -7,7 +7,7 @@ const schema = new Schema({
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
     createdDate: { type: Date, default: Date.now }
-}, { collection: 'user' });
+}, { collection: 'appuser' });
 
 schema.set('toJSON', {
     virtuals: true,
@@ -18,4 +18,4 @@ schema.set('toJSON', {
     }
 });
 
-module.exports = mongoose.model('user', schema);
+module.exports = mongoose.model('appuser', schema);

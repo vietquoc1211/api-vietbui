@@ -7,6 +7,7 @@ const schema = new Schema({
     type: { type: String, required: true },
     name_with_type: { type: String, required: true },
     code: { type: String, unique: true, required: true },
+    lock: { type: Boolean },
 }, { collection: 'tinhthanh' });
 
 module.exports = mongoose.model('tinhthanh', schema);

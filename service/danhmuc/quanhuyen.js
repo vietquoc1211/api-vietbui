@@ -1,86 +1,48 @@
-// const db = require('../../helpers/connectDB');
+const db = require('../../Helpers/db');
+const _quanhuyen = db.quanhuyen;
 
 module.exports = {
     getall,
     getbyid,
     add,
-    addmany
+    update,
+    addmany,
+    _delete
 };
-async function getall(req, res, next) {
-    // try {
-    //     let mongoDB = await db;
-    //     mongoDB.db("VietBui").collection("quanhuyen").find({}).toArray(function(err, result) {
-    //         if (err) throw err;
-    //         console.log(result);
-    //         const response = {
-    //             "code":"200",
-    //             "message":"",
-    //             "data": result
-    //         }
-    //         res.send(response);
-    //     });
-    // } catch (error) {
-    //     if (error != null) response.status(500).send({ error: error.message });
-    // }
+async function getall() {
+    return await _quanhuyen.find();
 }
-async function getbyid(req, res, id) {
-    // try {
-    //     let mongoDB = await db;
-    //     var query = { id: id };
-    //     mongoDB.db("VietBui").collection("quanhuyen").find({query}).toArray(function(err, result) {
-    //         if (err) throw err;
-    //         console.log(result);
-    //         const response = {
-    //             "code":"200",
-    //             "message":"",
-    //             "data": result
-    //         }
-    //         res.send(response);
-    //     });
-    // } catch (error) {
-    //     if (error != null) response.status(500).send({ error: error.message });
-    // }
+async function getbyid(id) {
+    return await _quanhuyen.findById(id);
 }
-async function add(req, res, next) {
-    // try {
-    // let mongoDB = await db;
-    // mongoDB.db("VietBui").collection("quanhuyen").insertOne(req.body, function(err, resdb) {
-    //     if (err) throw err;
-    //     else{
-    //         const response = {
-    //             "code":"200",
-    //             "message":"Number of documents inserted: " + resdb.insertedCount,
-    //             "data": req.body.Name
-    //         }
-    //         res.send(response);
-    //         mongoDB.close();
-    //     }
-    // });
-    // } catch (error) {
-    //     if (error != null) response.status(500).send({ error: error.message });
-    // }
-}
-async function addmany(req, res, next) {
-    // try {
-    // let mongoDB = await db;
 
-    // var newarray = [];
-    // for (const key in req.body) {
-    //     newarray.push(req.body[key]);
-    // }
-    // mongoDB.db("VietBui").collection("quanhuyen").insertMany(newarray, function(err, resdb) {
-    //     if (err) throw err;
-    //     else{
-    //         const response = {
-    //             "code":"200",
-    //             "message":"Number of documents inserted: " + resdb.insertedCount,
-    //             "data": req.body.Name
-    //         }
-    //         res.send(response);
-    //         mongoDB.close();
-    //     }
-    // });
-    // } catch (error) {
-    //     if (error != null) res.status(500).send({ error: error.message });
-    // }
+async function add(quanhuyenParam) {
+    if (await _quanhuyen.findOne({ name: quanhuyenParam.name,parent_code: quanhuyenParam.parent_code  })) {
+        throw '"' + quanhuyenParam.name + '" đã tồn tại';
+    }
+    // save user
+    await _quanhuyen(quanhuyenParam).save();
+}
+async function addmany(listquanhuyen) {
+     var newarray = [];
+    for (const key in listquanhuyen) {
+        newarray.push(req.body[key]);
+    }
+    await _quanhuyen.insertMany(newarray);
+}
+async function update(id, quanhuyenParam) {
+    const quanhuyen = await _quanhuyen.findById(id);
+
+    // validate
+    if (!quanhuyen) throw 'Phường xã không tồn tại!';
+    if (quanhuyen.name !== quanhuyenParam.name && await quanhuyen.findOne({ name: quanhuyenParam.name,parent_code:quanhuyenParam.parent_code })) {
+        throw 'Phường xã:  "' + quanhuyenParam.name + '" đã tồn tại';
+    }
+    Object.assign(quanhuyen, quanhuyenParam);
+
+    await quanhuyen.save();
+}
+
+async function _delete(id) {
+    await _quanhuyen.findByIdAndRemove(id);
 }

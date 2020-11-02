@@ -1,8 +1,8 @@
 var express = require("express");
-var dmtinhthanh = require("./danhmuc/tinhthanh");
-var dmphuongxa = require("./danhmuc/phuongxa");
-var dmquanhuyen = require("./danhmuc/quanhuyen");
-var user = require("./auth/user");
+var dmtinhthanh = require("./DanhMuc/TinhThanh");
+var dmphuongxa = require("./DanhMuc/PhuongXa");
+var dmquanhuyen = require("./DanhMuc/QuanHuyen");
+var user = require("./AppUser/AppUser");
 var routes = express();
 
 //auth

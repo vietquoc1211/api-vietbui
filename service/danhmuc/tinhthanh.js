@@ -1,86 +1,48 @@
-// const db = require('../../helpers/connectDB');
+const db = require('../../Helpers/db');
+const _tinhthanh = db.tinhthanh;
 
 module.exports = {
     getall,
     getbyid,
     add,
-    addmany
+    update,
+    addmany,
+    _delete
 };
-async function getall(req, res, next) {
-    // try {
-    //     let mongoDB = await db;
-    //     mongoDB.db("VietBui").collection("tinhthanh").find({}).toArray(function(err, result) {
-    //         if (err) throw err;
-    //         console.log(result);
-    //         const response = {
-    //             "code":"200",
-    //             "message":"",
-    //             "data": result
-    //         }
-    //         res.send(response);
-    //     });
-    // } catch (error) {
-    //     if (error != null) response.status(500).send({ error: error.message });
-    // }
+async function getall() {
+    return await _tinhthanh.find();
 }
-async function getbyid(req, res, id) {
-    // try {
-    //     let mongoDB = await db;
-    //     var query = { id: id };
-    //     mongoDB.db("VietBui").collection("tinhthanh").find({query}).toArray(function(err, result) {
-    //         if (err) throw err;
-    //         console.log(result);
-    //         const response = {
-    //             "code":"200",
-    //             "message":"",
-    //             "data": result
-    //         }
-    //         res.send(response);
-    //     });
-    // } catch (error) {
-    //     if (error != null) response.status(500).send({ error: error.message });
-    // }
+async function getbyid(id) {
+    return await _tinhthanh.findById(id);
 }
-async function add(req, res, next) {
-    // try {
-    // let mongoDB = await db;
-    // mongoDB.db("VietBui").collection("tinhthanh").insertOne(req.body, function(err, resdb) {
-    //     if (err) throw err;
-    //     else{
-    //         const response = {
-    //             "code":"200",
-    //             "message":"Number of documents inserted: " + resdb.insertedCount,
-    //             "data": req.body.Name
-    //         }
-    //         res.send(response);
-    //         mongoDB.close();
-    //     }
-    // });
-    // } catch (error) {
-    //     if (error != null) response.status(500).send({ error: error.message });
-    // }
-}
-async function addmany(req, res, next) {
-    // try {
-    // let mongoDB = await db;
 
-    // var newarray = [];
-    // for (const key in req.body) {
-    //     newarray.push(req.body[key]);
-    // }
-    // mongoDB.db("VietBui").collection("tinhthanh").insertMany(newarray, function(err, resdb) {
-    //     if (err) throw err;
-    //     else{
-    //         const response = {
-    //             "code":"200",
-    //             "message":"Number of documents inserted: " + resdb.insertedCount,
-    //             "data": req.body.Name
-    //         }
-    //         res.send(response);
-    //         mongoDB.close();
-    //     }
-    // });
-    // } catch (error) {
-    //     if (error != null) res.status(500).send({ error: error.message });
-    // }
+async function add(tinhthanhParam) {
+    if (await _tinhthanh.findOne({ name: tinhthanhParam.name,parent_code: tinhthanhParam.parent_code  })) {
+        throw '"' + tinhthanhParam.name + '" đã tồn tại';
+    }
+    // save user
+    await _tinhthanh(tinhthanhParam).save();
+}
+async function addmany(listtinhthanh) {
+     var newarray = [];
+    for (const key in listtinhthanh) {
+        newarray.push(req.body[key]);
+    }
+    await _tinhthanh.insertMany(newarray);
+}
+async function update(id, tinhthanhParam) {
+    const tinhthanh = await _tinhthanh.findById(id);
+
+    // validate
+    if (!tinhthanh) throw 'Phường xã không tồn tại!';
+    if (tinhthanh.name !== tinhthanhParam.name && await tinhthanh.findOne({ name: tinhthanhParam.name,parent_code:tinhthanhParam.parent_code })) {
+        throw 'Phường xã:  "' + tinhthanhParam.name + '" đã tồn tại';
+    }
+    Object.assign(tinhthanh, tinhthanhParam);
+
+    await tinhthanh.save();
+}
+
+async function _delete(id) {
+    await _tinhthanh.findByIdAndRemove(id);
 }
