@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const quanhuyenService = require('../../service/DanhMuc/QuanHuyen.js');
+const quanhuyenService = require('../../service/danhmuc/quanhuyen.js');
 const authorize = require('../../helpers/authorize');
 const apiRes = require('../../helpers/apiResponse');
 

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const tinhthanhService = require('../../service/DanhMuc/tinhthanh.js');
+const tinhthanhService = require('../../service/danhmuc/tinhthanh.js');
 const authorize = require('../../helpers/authorize');
 const apiRes = require('../../helpers/apiResponse');
 
