@@ -1,13 +1,13 @@
-var apiRouter = require("./controllers/routes");
-var indexRouter = require("./controllers/index");
-var apiResponse = require("./helpers/apiResponse");
+var apiRouter = require("./Controllers/routes");
+var indexRouter = require("./Controllers/index");
+var apiResponse = require("./Helpers/apiResponse");
 var cors = require("cors");
 var express = require("express");
 var app = express();
 const port = process.env.PORT || 3000; 
 
 app.set("view engine", "ejs");
-app.set("views", "./views");
+app.set("Views", "./Views");
 app.use(express.static("public"));
 
 // body-parser
