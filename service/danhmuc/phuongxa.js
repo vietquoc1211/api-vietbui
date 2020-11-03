@@ -35,7 +35,7 @@ async function update(id, phuongxaParam) {
 
     // validate
     if (!phuongxa) throw 'Phường xã không tồn tại!';
-    if (phuongxa.name !== phuongxaParam.name && await phuongxa.findOne({ name: phuongxaParam.name,parent_code:phuongxaParam.parent_code })) {
+    if (phuongxa.name !== phuongxaParam.name && await _phuongxa.findOne({ name: phuongxaParam.name,parent_code:phuongxaParam.parent_code })) {
         throw 'Phường xã:  "' + phuongxaParam.name + '" đã tồn tại';
     }
     Object.assign(phuongxa, phuongxaParam);

@@ -17,7 +17,7 @@ async function getbyid(id) {
 }
 
 async function add(tinhthanhParam) {
-    if (await _tinhthanh.findOne({ name: tinhthanhParam.name,parent_code: tinhthanhParam.parent_code  })) {
+    if (await _tinhthanh.findOne({ name: tinhthanhParam.name })) {
         throw '"' + tinhthanhParam.name + '" đã tồn tại';
     }
     // save user
@@ -34,9 +34,9 @@ async function update(id, tinhthanhParam) {
     const tinhthanh = await _tinhthanh.findById(id);
 
     // validate
-    if (!tinhthanh) throw 'Phường xã không tồn tại!';
-    if (tinhthanh.name !== tinhthanhParam.name && await tinhthanh.findOne({ name: tinhthanhParam.name,parent_code:tinhthanhParam.parent_code })) {
-        throw 'Phường xã:  "' + tinhthanhParam.name + '" đã tồn tại';
+    if (!tinhthanh) throw 'tỉnh thành không tồn tại!';
+    if (tinhthanh.name !== tinhthanhParam.name && await _tinhthanh.findOne({ name: tinhthanhParam.name })) {
+        throw 'tỉnh thành:  "' + tinhthanhParam.name + '" đã tồn tại';
     }
     Object.assign(tinhthanh, tinhthanhParam);
 

@@ -35,7 +35,7 @@ async function update(id, quanhuyenParam) {
 
     // validate
     if (!quanhuyen) throw 'Phường xã không tồn tại!';
-    if (quanhuyen.name !== quanhuyenParam.name && await quanhuyen.findOne({ name: quanhuyenParam.name,parent_code:quanhuyenParam.parent_code })) {
+    if (quanhuyen.name !== quanhuyenParam.name && await _quanhuyen.findOne({ name: quanhuyenParam.name,parent_code:quanhuyenParam.parent_code })) {
         throw 'Phường xã:  "' + quanhuyenParam.name + '" đã tồn tại';
     }
     Object.assign(quanhuyen, quanhuyenParam);
