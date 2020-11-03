@@ -1,4 +1,4 @@
-const db = require('../../Helpers/db');
+const db = require('../../helpers/db');
 const _phuongxa = db.phuongxa;
 
 module.exports = {

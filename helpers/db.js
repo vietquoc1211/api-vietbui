@@ -5,9 +5,9 @@ mongoose.connect(process.env.MONGODB_URI || config.connectionString, connectionO
 mongoose.Promise = global.Promise;
 
 module.exports = {
-    user: require('../Models/AppUser/AppUser'),
+    user: require('../models/AppUser/AppUser'),
     // danhmuc
-    tinhthanh: require('../Models/DanhMuc/TinhThanh'),
-    quanhuyen: require('../Models/DanhMuc/QuanHuyen'),
-    phuongxa: require('../Models/DanhMuc/PhuongXa'),
+    tinhthanh: require('../models/DanhMuc/TinhThanh'),
+    quanhuyen: require('../models/DanhMuc/QuanHuyen'),
+    phuongxa: require('../models/DanhMuc/PhuongXa'),
 };

@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const tinhthanhService = require('../../Service/DanhMuc/tinhthanh.js');
-const authorize = require('../../Helpers/authorize');
-const apiRes = require('../../Helpers/apiResponse');
+const tinhthanhService = require('../../service/DanhMuc/tinhthanh.js');
+const authorize = require('../../helpers/authorize');
+const apiRes = require('../../helpers/apiResponse');
 
 router.post('/add', authorize(), add);
 router.post('/addmany', authorize(), addmany);
