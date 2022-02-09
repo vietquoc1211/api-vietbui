@@ -8,6 +8,7 @@ router.post('/add', authorize(), add);
 router.post('/addmany', authorize(), addmany);
 router.post('/getbyid', getbyid);
 router.get('/getall', getall);
+router.get('/getbytinhthanhid/:tinhthanhid', getbytinhthanhid);
 router.put('/:id', update);
 router.delete(':/id', _delete);
 
@@ -20,6 +21,15 @@ function getall(req, res, next) {
         )
         .catch(err => next(err));
 }
+
+function getbytinhthanhid(req, res, next) {
+    quanhuyenService.getbytinhthanhid(req.params.tinhthanhid)
+        .then(
+            quanhuyen => res.json(apiRes.successResponseWithData(res,"",quanhuyen))
+        )
+        .catch(err => next(err));
+}
+
 function getbyid(req, res, next) {
     quanhuyenService.getbyid(req.body.id)
         .then(
@@ -27,6 +37,7 @@ function getbyid(req, res, next) {
         )
         .catch(err => next(err));
 }
+
 function add(req, res, next) {
     quanhuyenService.add(req.body)
         .then(
@@ -34,6 +45,7 @@ function add(req, res, next) {
         )
         .catch(err => next(err));
 }
+
 function addmany(req, res, next) {
     quanhuyenService.addmany(req.body)
         .then(

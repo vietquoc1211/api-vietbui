@@ -3,15 +3,22 @@ const _quanhuyen = db.quanhuyen;
 
 module.exports = {
     getall,
+    getbytinhthanhid,
     getbyid,
     add,
     update,
     addmany,
     _delete
 };
+
 async function getall() {
     return await _quanhuyen.find();
 }
+
+async function getbytinhthanhid(matinhthanh) {
+    return await _quanhuyen.find({ parent_code : matinhthanh })
+}
+
 async function getbyid(id) {
     return await _quanhuyen.findById(id);
 }
