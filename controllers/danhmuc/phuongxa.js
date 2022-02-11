@@ -7,6 +7,7 @@ const apiRes = require('../../helpers/apiResponse');
 router.post('/add', authorize(), add);
 router.post('/addmany', authorize(), addmany);
 router.post('/getbyid', getbyid);
+router.get('/getbyquanhuyenid/:quanhuyenid', getbyquanhuyenid);
 router.get('/getall', getall);
 router.put('/:id', update);
 router.delete(':/id', _delete);
@@ -20,6 +21,7 @@ function getall(req, res, next) {
         )
         .catch(err => next(err));
 }
+
 function getbyid(req, res, next) {
     phuongxaService.getbyid(req.body.id)
         .then(
@@ -27,6 +29,15 @@ function getbyid(req, res, next) {
         )
         .catch(err => next(err));
 }
+
+function getbyquanhuyenid(req, res, next) {
+    phuongxaService.getbyquanhuyenid(req.params.quanhuyenid)
+        .then(
+            phuongxa => res.json(apiRes.successResponseWithData(res,"",phuongxa))
+        )
+        .catch(err => next(err));
+}
+
 function add(req, res, next) {
     phuongxaService.add(req.body)
         .then(

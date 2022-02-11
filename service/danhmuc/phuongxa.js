@@ -4,6 +4,7 @@ const _phuongxa = db.phuongxa;
 module.exports = {
     getall,
     getbyid,
+    getbyquanhuyenid,
     add,
     update,
     addmany,
@@ -12,8 +13,13 @@ module.exports = {
 async function getall() {
     return await _phuongxa.find();
 }
+
 async function getbyid(id) {
     return await _phuongxa.findById(id);
+}
+
+async function getbyquanhuyenid(quanhuyenid) {
+    return await _phuongxa.find({ parent_code : quanhuyenid })
 }
 
 async function add(phuongxaParam) {
