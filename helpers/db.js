@@ -10,4 +10,5 @@ module.exports = {
     tinhthanh: require('../models/danhmuc/tinhthanh'),
     quanhuyen: require('../models/danhmuc/quanhuyen'),
     phuongxa: require('../models/danhmuc/phuongxa'),
+    dantoc: require('../models/danhmuc/dantoc'),
 };
